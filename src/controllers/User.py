@@ -32,7 +32,3 @@ class UserController:
             "birthday": user.birthday,
             "perfil_image": user.perfil_image,
         }
-
-
-  git config --global user.email "lucas_shiguioka@hotmail.com"
-  git config --global user.name "Lucas Furtado"
