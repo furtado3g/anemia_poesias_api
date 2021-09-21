@@ -1,6 +1,9 @@
 from src.database.database import Users
 from src.util.password import encrypt_password
-from datetime import datetime
+from datetime import datetime,timedelta
+from src.util.auth import create_token
+
+
 class UserController:
 
     def __init__(self):
@@ -24,11 +27,19 @@ class UserController:
         encripted_password = encrypt_password(password)
         user = Users.select().where((Users.username == username) &
                                     (Users.password == encripted_password)).first()
-        
-        return {
+        expiration_date = datetime.now()
+        expiration_date += +timedelta(hours=1)
+        session_token = create_token({
             "name": user.name,
             "username": user.username,
             "email": user.email,
-            "birthday": user.birthday,
+            "birthday": user.birthday.isoformat(),
             "perfil_image": user.perfil_image,
+            "iat": expiration_date.isoformat()
+        }, user.password)
+        return {
+            "session_token": session_token
         }
+
+    def update(token, user):
+        None
